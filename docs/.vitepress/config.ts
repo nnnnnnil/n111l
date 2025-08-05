@@ -1,8 +1,12 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  base: '/n111l/',
   title: 'n111l',
   description: 'n111l的个人博客',
+  head:[
+    ['link', { rel: 'icon', href: '/n111l/images/logo.png' }],
+  ],
   themeConfig: {
     logo: '/images/logo.png',
     socialLinks: [

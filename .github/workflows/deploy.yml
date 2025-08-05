@@ -1,0 +1,56 @@
+name: Deploy n111l to GitHub Pages
+
+# 触发条件：当推送到 main 分支时运行（若仓库默认分支是 master，改为 master）
+on:
+  push:
+    branches: [main]
+
+# 权限配置：允许读写 GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 只允许同时运行一个部署任务
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # 使用 Ubuntu 系统运行
+    steps:
+      # 1. 拉取代码到服务器
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 拉取所有历史提交，确保最后更新时间正确
+
+      # 2. 安装 Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.16.0 # 使用 Node 22（LTS 版本）
+          cache: 'pnpm' # 缓存依赖（若用 pnpm 改为 'pnpm'，yarn 改为 'yarn'）
+
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: pnpm ci # 比 npm install 更严格，确保依赖版本一致
+
+      # 4. 构建 VitePress 项目
+      - name: Build VitePress site
+        run: pnpm run build # 对应 package.json 中的构建脚本
+
+      # 5. 配置 GitHub Pages 环境
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      # 6. 上传构建产物到 GitHub Pages
+      - name: Upload build artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs/.vitepress/dist' # 构建产物的路径（固定）
+
+      # 7. 部署到 GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
