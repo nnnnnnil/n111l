@@ -5,10 +5,10 @@ export default defineConfig({
   title: 'n111l',
   description: 'n111l的个人博客',
   head:[
-    ['link', { rel: 'icon', href: '/n111l/images/logo.png' }],
+    ['link', { rel: 'icon', href: '/n111l/images/myLogo.png' }],
   ],
   themeConfig: {
-    logo: '/images/logo.png',
+    logo: '/images/myLogo.png',
     socialLinks: [
       { icon: 'github', link: 'https://github.com/nnnnnnil' }
     ],

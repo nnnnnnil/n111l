@@ -13,7 +13,7 @@ hero:
       text: GitHub
       link: https://github.com/nnnnnnil
   image:
-      src: /images/logo.png
+      src: /images/myLogo.png
       alt: N111l
 
 frontmatter:
