@@ -15,8 +15,8 @@ export default defineConfig({
     // 头部导航配置
     nav: [
       {
-        link: '/',
-        text: '首页'
+        link: '/front-end/html',
+        text: '指南'
       }
     ],
     // 启用搜索框
@@ -28,12 +28,12 @@ export default defineConfig({
       {
         text: '前端',
         items: [
-          { text: 'HTML', link: '/html' },
-          { text: 'CSS', link: '/css' },
-          { text: 'JavaScript', link: '/js' },
-          { text: 'TypeScript', link: '/ts' },
-          { text: 'Vue', link: '/vue' },
-          { text: 'React', link: '/react' }
+          { text: 'HTML', link: '/front-end/html' },
+          { text: 'CSS', link: '/front-end/css' },
+          { text: 'JavaScript', link: '/front-end/js' },
+          { text: 'TypeScript', link: '/front-end/ts' },
+          { text: 'Vue', link: '/front-end/vue' },
+          { text: 'React', link: '/front-end/react' }
         ]
       },
       {

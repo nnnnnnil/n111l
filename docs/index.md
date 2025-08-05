@@ -1,12 +1,24 @@
-# n111l的个人博客
+---
+layout: home
 
-欢迎来到n111l的个人博客。这里提供了一些参考资料。
+hero:
+  name: N111l
+  text: 记录一些开发知识片段
+  tagline: What Can I Say? ManBa out!
+  actions:
+    - theme: alt
+      text: 快速开始
+      link: /front-end/html
+    - theme: alt
+      text: GitHub
+      link: https://github.com/nnnnnnil
+  image:
+      src: /images/logo.png
+      alt: N111l
 
-## 快速导航
+frontmatter:
+  comment: false
 
-- [前端技术](#前端)
-- [后端技术](#后端)
+features:
 
-## 关于本站
-
-Man, HaHaHa, What can i say? Manba out!
+---
