@@ -1,0 +1,12 @@
+/* .container {
+  height: 64px;
+} */
+.container .VPNavBarTitle.has-sidebar{
+  height: 64px;
+}
+.VPNavBarTitle.has-sidebar + .content {
+  height: 64px;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--vp-c-divider-light);
+  margin-left: 10px;
+}
