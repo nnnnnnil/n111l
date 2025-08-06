@@ -26,7 +26,7 @@ CSS（层叠样式表）用于描述HTML元素的显示样式。
 
 *   继承性：子元素会继承父元素的某些样式（如字体、颜色等），但布局相关样式（如`margin`、`padding`）通常不继承。
 
-*   优先级：决定样式规则应用的先后顺序，具体计算方式为：!important > 内联样式 > ID 选择器 > 类选择器 / 属性选择器 / 伪类选择器 > 元素选择器 > 通配符选择器。
+*   优先级：决定样式规则应用的先后顺序，具体计算方式为：<br> !important > 内联样式 > ID 选择器 > 类选择器 / 属性选择器 / 伪类选择器 > 元素选择器 > 通配符选择器。
 
 4.  `!important`**的作用是什么？使用时需要注意什么？**
 
@@ -162,19 +162,17 @@ CSS（层叠样式表）用于描述HTML元素的显示样式。
 
     `margin: auto`用于自动分配元素的外边距。在水平方向上，当元素具有确定的宽度（`width`）且为块级元素时，`margin-left: auto`和`margin-right: auto`可使元素水平居中，例如：
 
+    ```css
+    .box {
 
+        width: 300px;
 
-```css
-.box {
+        margin-left: auto;
 
-width: 300px;
+        margin-right: auto;
 
-margin-left: auto;
-
-margin-right: auto;
-
-}
-```
+    }
+    ```
 
 垂直方向上，`margin: auto`默认无法居中，需结合 Flexbox 等布局方式实现。
 
@@ -492,7 +490,7 @@ margin-right: auto;
 
 10.  **什么是定位（position）？CSS 中有哪些定位方式？**
 
-    定位是通过`position`属性控制元素在页面中的位置的布局方式。常见定位方式：
+*   定位是通过`position`属性控制元素在页面中的位置的布局方式。<br> 常见定位方式：
 
 *   `static`（静态定位）：默认值，元素遵循正常文档流，不脱离文档流，`top`/`left`等属性无效。
 
