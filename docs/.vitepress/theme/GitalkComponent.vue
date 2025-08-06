@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { nextTick, onMounted, watch } from 'vue'
+import { nextTick, onMounted, watch, ref } from 'vue'
 import { useData, useRouter } from 'vitepress'
 import initGitalk from './gitalk'
 import 'gitalk/dist/gitalk.css'
@@ -11,8 +11,13 @@ import 'gitalk/dist/gitalk.css'
 const { route } = useRouter()
 const { page } = useData()
 
+const gitalkRef = ref(null)
+
 const getGitalk = () => {
-  initGitalk(route.path)
+  if (gitalkRef.value) {
+    gitalkRef.value.innerHTML = ''
+    initGitalk(route.path)
+  }
 }
 
 watch(() => route.path, () => {
@@ -28,11 +33,9 @@ onMounted(() => {
   
   if (typeof window === 'undefined') return
 
-  const container = document.getElementById('gitalk-container')
-  if (container) {
-    container.innerHTML = ''
-    getGitalk()
-  }
+  gitalkRef.value = document.getElementById('gitalk-container')
+
+  getGitalk()
 })
 
 </script>
