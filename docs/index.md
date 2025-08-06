@@ -6,7 +6,7 @@ hero:
   text: 记录一些开发知识片段
   tagline: What Can I Say? ManBa out!
   actions:
-    - theme: alt
+    - theme: brand
       text: 快速开始
       link: /front-end/html
     - theme: alt
