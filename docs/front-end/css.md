@@ -171,7 +171,7 @@ width: 300px;
 
 margin-left: auto;
 
-margin-right: auto; /\* 水平居中 \*/
+margin-right: auto;
 
 }
 ```
@@ -242,9 +242,9 @@ margin-right: auto; /\* 水平居中 \*/
 
           left: 50%;
 
-          margin-top: -50px; /\* 自身高度的一半 \*/
+          margin-top: -50px; // 自身高度的一半
 
-          margin-left: -50px; /\* 自身宽度的一半 \*/
+          margin-left: -50px; // 自身宽度的一半
 
           background: red;
 
@@ -289,9 +289,9 @@ margin-right: auto; /\* 水平居中 \*/
 
           display: flex;
 
-          justify-content: center; /\* 水平居中 \*/
+          justify-content: center; // 水平居中
 
-          align-items: center; /\* 垂直居中 \*/
+          align-items: center; // 垂直居中
 
           width: 500px;
 
@@ -318,7 +318,7 @@ margin-right: auto; /\* 水平居中 \*/
 
       display: grid;
 
-      place-items: center; /\* 水平垂直居中 \*/
+      place-items: center; // 水平垂直居中
 
       width: 500px;
 
@@ -465,9 +465,9 @@ margin-right: auto; /\* 水平居中 \*/
 
 
 ```css
-@media \[媒体类型] and (媒体特性) {
+@media [媒体类型] and (媒体特性) {
 
-/\* 样式规则 \*/
+ // 样式规则
 
 }
 ```
@@ -572,13 +572,13 @@ font-family: "Microsoft YaHei", Arial, sans-serif;
 ```css
 .text {
 
-white-space: nowrap; /\* 禁止换行 \*/
+white-space: nowrap; // 禁止换行
 
-overflow: hidden; /\* 隐藏溢出内容 \*/
+overflow: hidden; // 隐藏溢出内容
 
-text-overflow: ellipsis; /\* 溢出部分显示省略号 \*/
+text-overflow: ellipsis; // 溢出部分显示省略号
 
-width: 200px; /\* 需设置固定宽度 \*/
+width: 200px; // 需设置固定宽度
 
 }
 ```
@@ -594,7 +594,7 @@ display: -webkit-box;
 
 -webkit-box-orient: vertical;
 
--webkit-line-clamp: 3; /\* 显示3行 \*/
+-webkit-line-clamp: 3; // 显示3行 
 
 overflow: hidden;
 
@@ -744,11 +744,11 @@ width: 200px;
 ```css
 @keyframes animationName {
 
- 0% { /\* 动画开始时的样式 \*/ }
+ 0% { // 动画开始时的样式 }
 
- 50% { /\* 动画中间时的样式 \*/ }
+ 50% { // 动画中间时的样式 }
 
- 100% { /\* 动画结束时的样式 \*/ }
+ 100% { // 动画结束时的样式 }
 
 }
 ```
@@ -813,3 +813,320 @@ width: 200px;
 *   效果更流畅：避免因重排导致的动画卡顿，尤其在移动设备上表现更优。
 
 *   支持 3D 效果：`transform`的 3D 属性（如`perspective`、`rotateX`）可实现立体动画，而传统属性难以实现。
+## 八、css变量
+1.  什么是css变量？
+    css变量是一种特殊的属性，用于存储重复使用的值，如颜色、字体大小等。
+2.  如何定义css变量？
+    定义css变量使用`--`前缀，例如：`--primary-color: #007bff;`
+3.  如何使用css变量？
+    使用css变量使用`var()`函数，例如：`color: var(--primary-color);`
+    示例：
+    ```css
+    :root {
+        --primary-color: #007bff;
+    }
+    .box {
+        color: var(--primary-color);
+    }
+    ```
+4. css实现换肤
+   * 定义基础变量\
+   在根元素（:root）中定义全局通用的 CSS 变量，作为默认主题（如浅色模式）。变量名需以 -- 开头，通常按功能分类命名（如颜色、字体、间距等）
+   ```css
+    :root {​
+        /* 颜色变量 */​
+        --primary-color: #4285f4; /* 主色调 */​
+        --bg-color: #ffffff; /* 背景色 */​
+        --text-color: #333333; /* 文本色 */​
+        --border-color: #e0e0e0; /* 边框色 */​
+    }
+   ```
+   * 定义其他主题变量\
+   为其他主题（如深色模式）定义专属变量，可通过给 html 或 body 添加特定类名（如 dark-theme）来隔离作用域。
+   ```css
+   :root.dark-theme {​
+        --primary-color: #8ab4f8; /* 主色调变亮 */​
+        --bg-color: #1a1a1a; /* 背景色加深 */​
+        --text-color: #f5f5f5; /* 文本色变浅 */​
+        --border-color: #333333; /* 边框色加深 */​
+    }
+   ```
+   * 在样式中使用变量
+   定义好变量后，在样式中使用`var()`函数引用变量，例如：`color: var(--primary-color);`
+   示例：
+   ```css
+   .box {
+        color: var(--primary-color);
+    }
+   ```
+   * 切换主题
+     1. 通过 JavaScript 切换主题\
+     通过修改 html 元素的类名，切换 CSS 变量的作用域，实现主题动态切换。同时可将用户选择的主题保存到 localStorage，实现刷新后保持主题状态
+     ```js
+        <!-- 主题切换按钮 -->
+        <button id="themeToggle">切换深色模式</button>
+        <!-- 切换主题的 JavaScript 代码 -->
+        <script>
+            const themeToggleDom = document.getElementById('themeToggle');​
+            function toggleTheme() {
+                const isDark = document.documentElement.classList.toggle('dark-theme');​
+                ​
+                // 更新按钮文本​
+                themeToggleDom.textContent = isDark ? '切换浅色模式' : '切换深色模式';​
+                ​
+                // 保存主题偏好到本地存储​
+                if (isDark) {​
+                    localStorage.setItem('preferred-theme', 'dark-theme');​
+                } else {​
+                    localStorage.removeItem('preferred-theme');​
+                }​
+            }
+            themeToggleDom.addEventListener('click', toggleTheme);
+            // 页面加载时检查本地存储，应用保存的主题
+            window.addEventListener('load', () => {
+                const preferredTheme = localStorage.getItem('preferred-theme');
+                if (preferredTheme) {
+                    document.documentElement.classList.add(preferredTheme);
+                }
+            })
+        </script>
+     ```
+     2. 自动识别系统主题\
+     通过 window.matchMedia 检测用户操作系统的主题偏好（如深色模式），自动应用对应主题
+     示例：
+     ```js
+     // 检测用户操作系统的主题偏好
+     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+     // 监听主题偏好变化事件
+     prefersDarkScheme.addEventListener('change', (e) => {
+        const isDark = e.matches;
+        // 切换主题
+        toggleTheme(isDark);
+     });
+     ```
+
+## 九、css预处理
+1.  什么是css预处理？
+    css预处理是指在css代码编写过程中，使用一种特殊的语法和工具，将其转换为标准的css代码。
+2. scss
+    scss是一种css的预处理语言，它扩展了css的功能，增加了变量、嵌套、Mixin、继承等特性，使css代码更加简洁、易维护。
+    变量：
+    scss允许定义变量，用于存储重复使用的值，如颜色、字体大小等。
+    示例：
+    ```scss
+    $primary-color: #007bff;
+    .box {
+        color: $primary-color;
+    }
+    ```
+    嵌套：
+    scss允许将选择器嵌套在其他选择器内部，使代码更加清晰、易读。
+    示例：
+    ```scss
+    .container {
+        width: 100%;
+        .box {
+            width: 50%;
+        }
+    }
+    ```
+    Mixin：
+    scss允许定义可重复使用的代码块，称为Mixin。
+    示例：
+    ```scss
+    @mixin flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .box {
+        @include flex-center;
+    }
+    ```
+    继承：
+    scss允许一个选择器继承另一个选择器的样式，称为继承。
+    示例：
+    ```scss
+    .box {
+        width: 100px;
+        height: 100px;
+    }
+    .box2 {
+        @extend .box;
+        background-color: red;
+    }
+    ```
+    函数：
+    scss允许定义函数，用于计算值或处理字符串等。
+    示例：
+    ```scss
+    @function double($value) {
+        @return $value * 2;
+    }
+    .box {
+        width: double(100px);
+    }
+    ```
+    条件语句：
+    scss允许使用条件语句，如`@if`、`@else if`、`@else`等。
+    示例：
+    ```scss
+    @if 100px > 200px {
+        .box {
+            width: 100px;
+        }
+    } @else {
+        .box {
+            width: 200px;
+        }
+    }
+    ```
+    循环语句：
+    scss允许使用循环语句，如`@for`、`@each`、`@while`等。
+    示例：
+    ```scss
+    @for $i from 1 through 3 {
+        .box#{$i} {
+            width: 100px * $i;
+        }
+    }
+    ```
+    运算符：
+    scss允许使用运算符，如`+`、`-`、`*`、`/`等。
+    示例：
+    ```scss
+    .box {
+        width: 100px + 200px;
+    }
+    ```
+    math函数：
+    scss允许使用math函数，如`round()`、`ceil()`、`floor()`、`percentage()`等。
+    示例：
+    ```scss
+    .box {
+        width: round(100.5px);
+    }
+    ```
+    字符串函数：
+    scss允许使用字符串函数，如`unquote()`、`quote()`、`to-upper-case()`、`to-lower-case()`等。
+    示例：
+    ```scss
+    .box {
+        content: unquote('hello');
+    }
+    ```
+    列表函数：
+    scss允许使用列表函数，如`length()`、`nth()`、`join()`、`append()`等。
+    示例：
+    ```scss
+    .box {
+        content: length(100px 200px 300px);
+    }
+    ```
+    颜色函数：
+    scss允许使用颜色函数，如`rgba()`、`hsla()`、`lighten()`、`darken()`等。
+    示例：
+    ```scss
+    .box {
+        background-color: rgba(255, 0, 0, 0.5);
+    }
+    ```
+    时间函数：
+    scss允许使用时间函数，如`time()`、`date()`、`month()`、`year()`等。
+    示例：
+    ```scss
+    .box {
+        content: time();
+    }
+    ```
+    其他函数：
+    scss允许使用其他函数，如`random()`、`abs()`、`min()`、`max()`等。
+    示例：
+    ```scss
+    .box {
+        content: random();
+    }
+    ```
+    导入：
+    scss允许使用`@import`导入其他scss文件，如`@import 'variables.scss';`。
+    示例：
+    ```scss
+    @import 'variables.scss';
+    .box {
+        color: $primary-color;
+    }
+    ```
+3. less
+    less是一种css的预处理语言，它扩展了css的功能，增加了变量、嵌套、Mixin、继承等特性，使css代码更加简洁、易维护。
+    变量：
+    less允许定义变量，用于存储重复使用的值，如颜色、字体大小等。
+    示例：
+    ```less
+    @primary-color: #007bff;
+    .box {
+        color: @primary-color;
+    }
+    ```
+    嵌套：
+    less允许将选择器嵌套在其他选择器内部，使代码更加清晰、易读。
+    示例：
+    ```less
+    .container {
+        width: 100%;
+        .box {
+            width: 50%;
+        }
+    }
+    ```
+    Mixin：
+    less允许定义可重复使用的代码块，称为Mixin。
+    示例：
+    ```less
+    .flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .box {
+        .flex-center;
+    }
+    ```
+    继承：
+    less允许一个选择器继承另一个选择器的样式，称为继承。
+    示例：
+    ```less
+    .box {
+        width: 100px;
+        height: 100px;
+    }
+    .box2 {
+        &:extend(.box);
+        background-color: red;
+    }
+    ```
+    条件语句：
+    less允许使用`@when`语句，根据条件判断是否应用样式。
+    示例：
+    ```less
+    @primary-color: #007bff;
+    .box {
+        color: @primary-color;
+    }
+    .box2 {
+        @when @primary-color == #007bff {
+            background-color: red;
+        }
+    }
+    ```
+    循环语句：
+    通过混合自我调用 + 条件判断实现循环终止，类似 for 循环的效果。
+    示例：
+    ```less
+    .loop(@n) when (@n > 0) {
+        .box-@{n} {
+            width: 100px * @n;
+        }
+        .loop(@n - 1);
+    }
+    .loop(3);
+    ```
