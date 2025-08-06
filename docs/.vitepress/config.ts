@@ -1,5 +1,23 @@
 import { defineConfig } from 'vitepress'
 
+const sidebarConfig = [
+  {
+    text: '前端',
+    items: [
+      { text: 'HTML', link: '/front-end/html' },
+      { text: 'CSS', link: '/front-end/css' },
+      { text: 'JavaScript', link: '/front-end/js' },
+      { text: 'TypeScript', link: '/front-end/ts' },
+      { text: 'Vue', link: '/front-end/vue' },
+      { text: 'React', link: '/front-end/react' }
+    ]
+  },
+  {
+    text: '后端',
+    items: [] // 后端子菜单可根据需要添加
+  }
+]
+
 export default defineConfig({
   base: '/n111l/',
   title: 'n111l',
@@ -15,6 +33,10 @@ export default defineConfig({
     // 头部导航配置
     nav: [
       {
+        link: '/profile',
+        text: '关于我'
+      },
+      {
         link: '/front-end/html',
         text: '指南'
       }
@@ -24,23 +46,9 @@ export default defineConfig({
       provider: 'local', // 本地搜索
     },
     // 侧边栏配置
-    sidebar: [
-      {
-        text: '前端',
-        items: [
-          { text: 'HTML', link: '/front-end/html' },
-          { text: 'CSS', link: '/front-end/css' },
-          { text: 'JavaScript', link: '/front-end/js' },
-          { text: 'TypeScript', link: '/front-end/ts' },
-          { text: 'Vue', link: '/front-end/vue' },
-          { text: 'React', link: '/front-end/react' }
-        ]
-      },
-      {
-        text: '后端',
-        items: [] // 后端子菜单可根据需要添加
-      }
-    ],
+    sidebar: {
+      '/front-end/': sidebarConfig,
+    },
     outline: {
       label: '目录',
     }

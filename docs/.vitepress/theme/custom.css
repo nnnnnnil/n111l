@@ -1,16 +1,3 @@
-/* .container {
-  height: 64px;
-} */
-/* .container .VPNavBarTitle.has-sidebar{
-  height: 64px;
-}
-.VPNavBarTitle.has-sidebar + .content {
-  height: 64px;
-  box-sizing: border-box;
-  border-bottom: 1px solid var(--vp-c-divider-light);
-  margin-left: 10px;
-} */
-
 
 :root:where(:lang(fa)) {
   --vp-font-family-base:
@@ -55,3 +42,26 @@
   width: 100%;
   aspect-ratio: 1 / 1;
 } */
+
+/* 个人简历页面 */
+@media (max-width: 768px) {
+  .page-profile-class .VPNav {
+    position: sticky;
+  }
+  .page-profile-class .VPNavBar:not(.home.top) {
+    background-color: var(--vp-nav-bg-color);
+  }
+
+}
+.page-profile-class .vp-doc.container {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+.page-profile-class .vp-doc.container:first-child {
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, .12);
+}
+.page-profile-class .vp-doc.container h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
