@@ -23,10 +23,10 @@ export default defineConfig({
   title: 'n111l',
   description: 'n111l的个人博客',
   head:[
-    ['link', { rel: 'icon', href: '/n111l/images/myLogo.png' }],
+    ['link', { rel: 'icon', href: '/n111l/images/myLogo.webp' }],
   ],
   themeConfig: {
-    logo: '/images/myLogo.png',
+    logo: '/images/myLogo.webp',
     socialLinks: [
       { icon: 'github', link: 'https://github.com/nnnnnnil' }
     ],
