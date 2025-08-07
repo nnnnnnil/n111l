@@ -33,7 +33,8 @@ JavaScript是一种轻量级的编程语言，用于为网页添加交互性。
     | 重复声明   | 允许       | 不允许     | 不允许      |
     | 初始值     | 不需要     | 不需要     | 必须提供    |
     | 重新赋值   | 可以       | 可以       | 不可以      |
-    使用let和const声明的变量，在声明之前不能被访问，否则会报错（ReferenceError）（暂时性死区）。
+    
+    <span style="color: red;">使用let和const声明的变量，在声明之前不能被访问，否则会报错（ReferenceError）（暂时性死区）。</span>
 
 9. **什么是全局变量污染？如何避免？**  
    多个脚本定义同名全局变量导致的冲突。避免方式：使用 IIFE、模块（ES6 Module）、命名空间对象包裹变量。
@@ -665,11 +666,11 @@ Function.prototype.apply = function(context, args) {
 Function.prototype.bind = function(context, ...args) {
   if (typeof this !== 'function') throw new Error('caller must be a function');
   const fn = this;
-  return function(...args) {
+  return function(...args2) {
     if (this instanceof fn) {
-      return new fn(...args);
+      return new fn(...args, ...args2);
     }
-    return fn.apply(context, args);
+    return fn.apply(context, args.concat(args2));
   };
 };
 ```

@@ -23,13 +23,13 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
 | `symbol`    | 符号类型，用于创建唯一的标识符，通常用于对象的属性键          | `const sym: symbol = Symbol("sym");`                                                                       |    
 
 ## 二、高级类型
-1. 联合类型
+1. 联合类型\
    联合类型表示一个值可以是多种类型中的任意一种，使用 `|` 来分隔不同的类型。通过联合类型，能够灵活地处理变量可能出现的多种类型情况。
    ```ts
    let unionVal: string | number = "hello";
    unionVal = 100;
    ```
-2. 交叉类型
+2. 交叉类型\
    交叉类型表示一个值同时满足多种类型的情况，使用 `&` 来分隔不同的类型。通过交叉类型，能够将多个类型合并为一个类型，实现更复杂的类型组合。
    ```ts
    interface A {
@@ -41,19 +41,19 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
    type AB = A & B;
    const ab: AB = { a: 1, b: "hello" };
    ```
-3. 类型断言
+3. 类型断言\
    类型断言用于告诉编译器变量的实际类型，从而避免类型错误。类型断言有两种方式：尖括号语法和 `as` 关键字。
    ```ts
    let someVal: unknown = "hello";
    let strLen: number = (someVal as string).length;
    ```
-4. 类型别名
+4. 类型别名\
    类型别名用于给类型起一个新的名称，方便在代码中使用。类型别名可以是任意类型，包括基本类型、联合类型、交叉类型等。
    ```ts
    type MyNumber = number;
    let num: MyNumber = 100;
    ```
-5. 接口
+5. 接口\
    接口用于定义对象的形状，包括属性和方法。接口可以用于描述函数的参数和返回值，也可以用于描述类的结构。
    ```ts
    interface Person {
@@ -64,7 +64,7 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
      console.log(`Hello, ${person.name}!`);
    }
    ```
-   * 接口继承
+   * 接口继承\
      接口可以继承其他接口，从而实现接口的扩展和复用。通过接口继承，能够定义出更复杂的类型结构，满足不同的需求。
      ```ts
      interface Animal {
@@ -75,7 +75,7 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
      }
      const dog: Dog = { name: "Buddy", breed: "Labrador" };
      ```
-   * 接口合并
+   * 接口合并\
      接口可以合并多个接口的定义，从而实现接口的扩展和复用。通过接口合并，能够定义出更复杂的类型结构，满足不同的需求。
      ```ts
      interface A {
@@ -86,7 +86,7 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
      }
      const a: A = { a: 1, b: "hello" };
      ```
-   * 接口索引签名
+   * 接口索引签名\
      接口可以定义索引签名，用于描述对象的动态属性。通过索引签名，能够定义出更灵活的类型结构，满足不同的需求。
      ```ts
      interface Dictionary {
@@ -94,7 +94,7 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
      }
      const dict: Dictionary = { a: 1, b: 2, c: 3 };
      ```
-6. 泛型
+6. 泛型\
    泛型用于定义函数、接口、类等的类型参数，使得代码更加灵活和可复用。泛型可以在定义时指定类型参数，也可以在使用时根据实际情况推断类型参数。
    ```ts
    function identity<T>(arg: T): T {
@@ -103,7 +103,7 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
    const num = identity<number>(100);
    const str = identity<string>("hello");
    ```
-   * 泛型约束
+   * 泛型约束\
      泛型约束用于限制泛型类型的范围，确保泛型类型符合特定的条件。通过泛型约束，可以在编译时捕获类型错误，避免运行时错误。
      ```ts
      function identity<T extends number>(arg: T): T {
@@ -112,7 +112,7 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
      const num = identity<number>(100);
      const str = identity<string>("hello"); // 编译错误
      ```
-     * 泛型约束接口
+     * 泛型约束接口\
        泛型约束接口用于定义泛型类型的约束条件，确保泛型类型符合特定的接口定义。通过泛型约束接口，可以在编译时捕获类型错误，避免运行时错误。
        ```ts
        interface Lengthwise {

@@ -6,11 +6,11 @@ pageClass: page-profile-class
 
 ---
 
-<center>
+<div style="text-align: center;">
   <h1>邱金良</h1>
-</center>
+</div>
 
-<center>
+<div style="text-align: center;">
   <p>
     <span>电话：</span>
       <strong>13148656108</strong>
@@ -18,45 +18,45 @@ pageClass: page-profile-class
     <span>邮箱：</span>
       <strong>13148656108@163.com</strong>
   </p> 
-</center>
+</div>
 
-<center>
+<div style="text-align: center;">
   <p>
     <span>状态：</span>
     <strong>已离职，可随时联系，欢迎沟通</strong>
   </p>
-</center>
+</div>
 
 
 
 
-## 一、工作经历
+<h2>一、工作经历</h2>
 
-### 1. 深圳市瑞云科技有限公司 - web 前端开发（青椒云部门）
+<h3>1. 深圳市瑞云科技有限公司 - web 前端开发（青椒云部门）</h3>
 
 **时间**：2024 年 08 月 - 2025 年 01 月
 
 **职责**：负责青椒云官网维护，经销商管理系统和青椒云客户端迭代开发。
 
-### 2. 广州奥凯信息咨询有限公司 - web 前端开发（软件部）
+<h3>2. 广州奥凯信息咨询有限公司 - web 前端开发（软件部）</h3>
 
 **时间**：2022 年 04 月 - 2024 年 08 月
 
 **职责**：负责公司前端项目开发，公司产品壹专利的迭代和维护。
 
-### 3. 深圳兔展智能科技有限公司 (广州) - web 前端开发（内容营销部）
+<h3>3. 深圳兔展智能科技有限公司 (广州) - web 前端开发（内容营销部）</h3>
 
 **时间**：2021 年 08 月 - 2022 年 02 月
 
 **职责**：负责公司 H5、后台管理系统开发和迭代。
 
-### 4. 广州聚拓软件科技有限公司 - web 前端开发（研发部）
+<h3>4. 广州聚拓软件科技有限公司 - web 前端开发（研发部）</h3>
 
 **时间**：2020 年 06 月 - 2021 年 08 月
 
 **职责**：负责 Web 端的相关开发，按照项目需求和技术需求实现工作内容。
 
-## 二、教育经历
+<h2>二、教育经历</h2>
 
 **广州大学华软软件学院** - 物联网工程（本科）
 
@@ -64,7 +64,7 @@ pageClass: page-profile-class
 
 **专业**：计算机系
 
-## 三、专业技能
+<h2>三、专业技能</h2>
 
 1.  熟练掌握 `html`、`css`、`javascript` 和 `typescript`。
 
@@ -76,9 +76,9 @@ pageClass: page-profile-class
 
 5.  熟悉 `docker` 基本使用和项目容器化部署。
 
-## 四、项目经历
+<h2>四、项目经历</h2>
 
-### 1. 青椒云客户端 (瑞云)
+<h3>1. 青椒云客户端 (瑞云)</h3>
 
 **时间**：2024 年 12 月 - 2025 年 01 月
 
@@ -90,7 +90,7 @@ pageClass: page-profile-class
 
 **技术**：`electron+svelte+typescript+less`
 
-### 2. 经销商管理系统 (瑞云)
+<h3>2. 经销商管理系统 (瑞云)</h3>
 
 **时间**：2024 年 10 月 - 2025 年 01 月
 
@@ -102,7 +102,7 @@ pageClass: page-profile-class
 
 **技术**：`react+umiMax+antdPro+typescript+styled-components`
 
-### 3. 青椒云官网 (瑞云)
+<h3>3. 青椒云官网 (瑞云)</h3>
 
 **时间**：2024 年 08 月 - 2025 年 01 月
 
@@ -114,7 +114,7 @@ pageClass: page-profile-class
 
 **技术**：`react+gatsby+typescript+styled-components`
 
-### 4. rayStack 云服务管理系统 (瑞云)
+<h3>4. rayStack 云服务管理系统 (瑞云)</h3>
 
 **时间**：2024 年 08 月 - 2025 年 01 月
 
@@ -126,7 +126,7 @@ pageClass: page-profile-class
 
 **技术**：`react+typescript+antd+styled-components`
 
-### 5. 公司内部组件库 (奥凯)
+<h3>5. 公司内部组件库 (奥凯)</h3>
 
 **时间**：2024 年 02 月 - 2024 年 04 月
 
@@ -140,7 +140,7 @@ pageClass: page-profile-class
 
 **技术**：`vue3+typescript+scss`
 
-### 6. 壹专利 (奥凯)
+<h3>6. 壹专利 (奥凯)</h3>
 
 **时间**：2022 年 05 月 - 2024 年 01 月
 
@@ -152,7 +152,7 @@ pageClass: page-profile-class
 
 **技术**：`vue2+vue-router+vuex+scss`
 
-### 7. 星级代理人评选 H5 (兔展)
+<h3>7. 星级代理人评选 H5 (兔展)</h3>
 
 **时间**：2021 年 11 月 - 2021 年 12 月
 
@@ -164,7 +164,7 @@ pageClass: page-profile-class
 
 **技术**：`react+redux+styled-components`
 
-## 五、个人总结
+<h2>五、个人总结</h2>
 
 本人性格随和，踏实认真，爱好广泛，具备良好团队合作意识，积极配合他人工作并尊重他人。对技术有钻研兴趣，热爱关注技术类视频学习 。
 
