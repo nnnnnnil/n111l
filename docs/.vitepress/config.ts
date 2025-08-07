@@ -46,9 +46,7 @@ export default defineConfig({
       provider: 'local', // 本地搜索
     },
     // 侧边栏配置
-    sidebar: {
-      '/front-end/': sidebarConfig,
-    },
+    sidebar: sidebarConfig,
     outline: {
       label: '目录',
     }
