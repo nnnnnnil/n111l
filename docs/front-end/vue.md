@@ -636,4 +636,265 @@ Vue是一个用于构建用户界面的渐进式框架。
 
 
 
-  ## 六、vue3 渲染流程
+## 六、vue3 渲染流程
+1. **创建应用实例**\
+   应用实例的创建是通过 `createApp` 方法实现的，该方法会返回一个应用实例对象，后续的配置和组件注册都需要在这个实例上进行。\
+   以下是伪代码，源码位置：[Vue 创建应用实例方法](https://github.com/vuejs/core/blob/main/packages/runtime-dom/src/index.ts#L107)
+   ```js
+    const createApp = ((...args) => {
+      const app = ensureRenderer().createApp(...args);
+      const { mount } = app;
+      // 重写mount方法
+      app.mount = (containerOrSelector) => {
+        const container = normalizeContainer(containerOrSelector);
+        if (!container) return;
+        const component = app._component;
+        // 处理模板编译
+        if (!isFunction(component) && !component.render && !component.template) {
+          component.template = container.innerHTML;
+        }
+        // 清空容器内容
+        container.innerHTML = '';
+        // 调用原始mount方法
+        const proxy = mount(container, false);
+        return proxy;
+      };
+      return app;
+    }) as CreateAppFunction<Element>;
+   ```
+
+2. **模板编译**\
+   模板编译是将 Vue 组件的模板字符串转换为渲染函数的过程。\
+   分为运行时和编译时两种方式。\
+   运行时方式：在运行时动态编译模板，性能较低。场景：cdn 加载\
+   编译时方式：在构建时静态编译模板，性能较高。场景：SFC 单文件组件，利用 webpack 等构建工具进行编译。\
+   以下是伪代码，源码位置：[Vue 模板编译方法](https://github.com/vuejs/core/blob/main/packages/compiler-dom/src/index.ts#L107)
+   ```js
+    function baseCompile(
+      template: string,
+      options: CompilerOptions
+      ): CodegenResult {
+      // 1. 解析模板生成AST
+      const ast = parse(template, options)
+      // 2. AST转换（优化和转换）
+      transform(ast, {
+        ...options,
+        nodeTransforms: [
+          ...(options.nodeTransforms || []),
+          transformText,     // 文本节点转换
+          transformElement,  // 元素节点转换
+          transformIf,       // v-if转换
+          transformFor       // v-for转换
+        ]
+      })
+      // 3. 生成渲染函数代码
+      return generate(ast, {
+        ...options,
+        mode: 'function' // 生成函数模式
+      })
+    }
+   ```
+
+3. **挂载组件 mountComponent**
+   挂载组件是将组件实例挂载到 DOM 元素上的过程。\
+   以下是伪代码，源码位置：[Vue 挂载组件方法](https://github.com/vuejs/core/blob/main/packages/runtime-core/src/renderer.ts#L330)
+   ```js
+    function mountComponent(
+      initialVNode,
+      container,
+      anchor,
+      parentComponent,
+      parentSuspense,
+      isSVG,
+      optimized
+    ) => {
+      // 1. 创建组件实例
+      const instance: ComponentInternalInstance = (initialVNode.component = createComponentInstance(
+        initialVNode,
+        parentComponent,
+        parentSuspense
+      ))
+      // 2. 设置组件实例
+      setupComponent(instance)
+      // 3. 设置渲染副作用
+      setupRenderEffect(
+        instance,
+        initialVNode,
+        container,
+        anchor,
+        parentSuspense,
+        isSVG,
+        optimized
+      )
+      // 4. 返回组件实例
+      return instance;
+    }
+   ```
+   3.1 **组件初始化 setupComponent**\
+   负责组件状态初始化，包括执行 setup 函数\
+   以下是伪代码，源码位置：[Vue 组件初始化方法](https://github.com/vuejs/core/blob/main/packages/runtime-core/src/component.ts#L802)
+   ```js
+    function setupComponent(instance: ComponentInternalInstance) {
+      const { props, children } = instance.vnode
+      // 初始化props
+      initProps(instance, props, instance.vnode)
+      // 初始化插槽
+      initSlots(instance, children)
+      
+      // 设置组件状态：如果有setup则执行
+      const setupResult = setupStatefulComponent(instance)
+      return setupResult
+    }
+   ```
+   3.2 **组件副作用 setupRenderEffect**\
+   负责组件渲染副作用的设置，包括渲染函数的执行和更新。\
+   以下是伪代码，源码位置：[Vue 组件渲染副作用方法](https://github.com/vuejs/core/blob/main/packages/runtime-core/src/renderer.ts#L1280)
+   ```js
+    const setupRenderEffect: SetupRenderEffectFn = (...) => {
+      // 创建更新函数
+      const componentUpdateFn = () => {
+        if (!instance.isMounted) {
+          // 首次渲染
+          const subTree = (instance.subTree = renderComponentRoot(instance))
+          // 执行patch算法
+          patch(null, subTree, container, anchor, instance, parentSuspense, isSVG)
+          // 保存真实DOM引用
+          initialVNode.el = subTree.el
+          // 标记已挂载
+          instance.isMounted = true
+          // 触发mounted钩子
+          queuePostRenderEffect(() => {
+            instance.m && instance.m()
+          }, parentSuspense)
+        } else {
+          // 更新渲染...
+        }
+      }
+      // 创建响应式effect
+      const effect = (instance.effect = new ReactiveEffect(
+        componentUpdateFn,
+        () => queueJob(instance.update),
+        instance.scope
+      ))
+      // 初始化更新任务
+      const update: SchedulerJob = (instance.update = () => effect.run())
+      update.id = instance.uid
+      update()
+    }
+   ```
+   
+   3.3 **Vnode Patch**\
+   负责组件 VNode 树的对比和更新，将差异应用到真实 DOM 上。\
+   以下是伪代码，源码位置：[Vue VNode 对比和更新方法](https://github.com/vuejs/core/blob/main/packages/runtime-core/src/renderer.ts#L374)
+   ```js
+    const patch: PatchFn = (
+      n1,          // 旧VNode
+      n2,          // 新VNode
+      container,   // 容器
+      anchor = null,
+      parentComponent = null,
+      parentSuspense = null,
+      isSVG = false,
+      slotScopeIds = null,
+      optimized = false
+    ) => {
+      // 1. 相同节点直接更新
+      if (n1 === n2) return
+      // 2. 不同类型节点直接替换
+      if (n1 && !isSameVNodeType(n1, n2)) {
+        unmount(n1, parentComponent, parentSuspense, true)
+        n1 = null
+      }
+      const { type, ref, shapeFlag } = n2
+      // 3. 根据节点类型处理
+      switch (type) {
+        case Text:
+          // 文本节点处理
+          processText(n1, n2, container, anchor)
+          break
+        case Comment:
+          // 注释节点处理
+          break
+        case Static:
+          // 静态节点处理
+          break
+        case Fragment:
+          // Fragment处理
+          break
+        default:
+          if (shapeFlag & ShapeFlags.ELEMENT) {
+            // DOM元素处理
+            processElement(...)
+          } else if (shapeFlag & ShapeFlags.COMPONENT) {
+            // 组件处理
+            processComponent(...)
+          } else if (shapeFlag & ShapeFlags.TELEPORT) {
+            // Teleport处理
+          } else if (__FEATURE_SUSPENSE__ && shapeFlag & ShapeFlags.SUSPENSE) {
+            // Suspense处理
+          }
+      }
+    }
+    ```
+    3.4 **调度更新**\
+    更新会被调度到微任务队列，实现批量更新。\
+    以下是伪代码，源码位置：[Vue 调度更新方法](https://github.com/vuejs/core/blob/main/packages/runtime-core/src/scheduler.ts#L94)
+    ```js
+    // 任务队列
+    const queue: SchedulerJob[] = []
+    // 刷新任务队列
+    function flushJobs(seen?: CountMap) {
+      // 1. 排序保证父子组件顺序
+      queue.sort((a, b) => getId(a) - getId(b))
+      // 2. 循环执行任务
+      for (let i = 0; i < queue.length; i++) {
+        const job = queue[i]
+        callWithErrorHandling(job, null, ErrorCodes.SCHEDULER)
+      }
+      // 3. 清空队列
+      queue.length = 0
+    }
+    // 添加任务到队列
+    export function queueJob(job: SchedulerJob) {
+      // 去重处理
+      if (!queue.includes(job)) {
+        queue.push(job)
+        // 异步执行刷新
+        queueFlush()
+      }
+    }
+    // 异步刷新队列
+    function queueFlush() {
+      if (!isFlushing && !isFlushPending) {
+        isFlushPending = true
+        // 使用微任务或Promise.then
+        currentFlushPromise = resolvedPromise.then(flushJobs)
+      }
+    }
+    ```
+4. **vue3 整体流程图**\
+![vue3 渲染流程](/images/vue3-process.webp)
+
+## 七、模板编译差异
+| 特性 | Vue 2 | Vue 3 |
+|------|-------|-------|
+| 编译目标 | 生成渲染函数 | 生成优化后的渲染函数 + 元数据 |
+| 优化策略 | 有限的静态提升 | 多级静态提升 + PatchFlags |
+| 关键优化技术 | 静态节点标记 | 树结构打平 + 事件缓存 |
+| 编译输出 | 纯渲染函数 | 渲染函数 + 静态节点引用 |
+| 编译时机 | 构建时/运行时 | 构建时优先，运行时支持 |
+
+* template编译地址：[Vue 3 模板编译](https://template-explorer.vuejs.org/)
+* SFC 编译地址：[Vue 3 SFC 编译](https://sfc.vuejs.org/)
+
+## 八、diff差异
+# Vue2 与 Vue3 Diff 算法特性对比
+
+| 特性 | Vue 2 | Vue 3 |
+|------|-------|-------|
+| 算法类型 | 双端比较(oldStart/oldEnd/newStart/newEnd) | 双端比较 + 最长递增子序列 |
+| 比较策略 | 同层递归全量比较 | 基于 PatchFlags 的靶向更新 |
+| 静态节点处理 | 全量比较 | 完全跳过 |
+| Key 的作用 | 建议但不强制 | 强制要求，关键优化点 |
+| 碎片支持 | 不支持（需根节点） | 原生支持 Fragment |
+| 性能复杂度 | O(n) | O(1) 静态节点，O(n) 动态内容 |
