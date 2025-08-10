@@ -49,6 +49,15 @@ export default defineConfig({
     sidebar: sidebarConfig,
     outline: {
       label: '目录',
-    }
+    },
+    lastUpdated: {
+      text: '最后更新时间',
+      formatOptions: {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+        hour12: false,
+      },
+    },
   }
 })
