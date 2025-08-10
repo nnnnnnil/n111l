@@ -263,3 +263,65 @@ function Counter() {
 }
 ```
 
+## react hooks原理
+
+1. **hooks的数据结构**\
+    每个组件都有一个hooks链表，每个hook对应一个Hook对象。\
+    Hooks以链表形式存储在Fiber节点的`memoizedState`上。\
+    [源码位置](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberHooks.js#L194)
+    * memoizedState：
+      * useState：保存当前状态值
+      * useEffect：保存 { create, destroy, deps, tag } 对象
+      * useRef：保存 { current } 对象
+    ```ts
+    type Hook = {
+      memoizedState: any,      // 存储当前状态（state/effect/deps等）
+      baseState: any,          // 更新计算的基础状态
+      baseQueue: Update<any, any> | null, // 未处理的更新队列
+      queue: UpdateQueue<any, any> | null, // 更新队列（存储 setState 的 action）
+      next: Hook | null,       // 指向下一个 Hook（形成链表）
+    };
+    ```
+
+    1.1 *useState 实现*\
+    通过Fiber.memoizedState判断是否是mount阶段，如果是mount阶段，就调用mountState，否则调用updateState。\
+    以下是mount阶段伪代码，[mountState源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberHooks.js#L1922)
+    ```js
+    function mountState(initialState) {
+      // 1. 创建新的Hook对象
+      const hook = mountWorkInProgressHook();
+      // 2. 初始化状态
+      hook.memoizedState = initialState;
+      // 3. 创建更新队列
+      const queue = {
+        pending: null,
+        dispatch: null,
+        lastRenderedState: initialState
+      };
+      hook.queue = queue;
+      // 4. 创建dispatch函数（绑定Fiber和队列）
+      const dispatch = (queue.dispatch = dispatchSetState.bind(
+        null,
+        currentlyRenderingFiber,
+        queue
+      ));
+      return [hook.memoizedState, dispatch];
+    }
+    ```
+    以下是update阶段伪代码，[updateState源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberHooks.js#L1936)
+    ```js
+    function updateState() {
+      return updateReducer(basicStateReducer);
+    }
+    function updateReducer(reducer) {
+      // 1. 获取现有Hook对象
+      const hook = updateWorkInProgressHook();
+      // 2. 处理更新队列
+      if (hook.queue.pending) {
+        // ...计算新状态
+      }
+      return [hook.memoizedState, hook.queue.dispatch];
+    }
+    ```
+    1.2 *useState 实现整体过程*
+    ![useState 实现整体过程](/images/useState.webp)
