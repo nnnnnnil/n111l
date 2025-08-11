@@ -325,3 +325,69 @@ function Counter() {
     ```
     1.2 *useState 实现整体过程*
     ![useState 实现整体过程](/images/useState.webp)
+
+## react 渲染过程
+1. **初始化阶段**
+   * createRoot入口\
+   以下是伪代码，[createRoot源码](https://github.com/facebook/react/blob/main/packages/react-dom/src/client/ReactDOMRoot.js#L171)
+   ```js
+    export function createRoot(container, options) {
+      // 验证容器有效性
+      if (!isValidContainer(container)) {
+        throw new Error('Target container is not a DOM element.');
+      }
+      // 创建FiberRoot和root
+      const root = createContainer(
+        container,
+        ConcurrentRoot, // React 18默认并发模式
+        null,
+        isStrictMode,
+        concurrentUpdatesByDefaultOverride,
+        identifierPrefix,
+        onRecoverableError,
+        transitionCallbacks,
+      );
+      // 标记容器已被使用
+      container._reactRootContainer = root;
+      // 绑定所有支持的事件
+      const rootContainerElement = container.nodeType === COMMENT_NODE
+        ? container.parentNode
+        : container;
+      // React事件委托机制的基础，通过在根容器集中注册事件监听器，\n React能够实现高效的事件处理和合成事件系统，统一管理不同浏览器的事件兼容性问题
+      listenToAllSupportedEvents(rootContainerElement);
+      return new ReactDOMRoot(root);
+    }
+   ```
+   * createContainer入口\
+   创建 Fiber 根节点，初始化更新队列initializeUpdateQueue(HostRootFiber)，FiberRoot.current = HostRootFiber\
+   fiberRoot: 整个 React 应用的「根容器」，唯一一个。\
+   rootFiber: 组件树的根节点对应的 Fiber 对象（HostRootFiber），可能存在多个。\
+   以下是伪代码，[createContainer源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberReconciler.js#L235)
+   ```js
+    function createContainer(
+      containerInfo: Container,
+      tag: RootTag,
+      hydrate: boolean,
+      hydrationCallbacks: null | SuspenseHydrationCallbacks,
+    ): FiberRoot {
+      // 1. 创建 FiberRoot 实例
+      const root: FiberRoot = {
+        containerInfo, // 真实 DOM 容器（如 div#root）
+        current: null, // 当前激活的 Fiber 树（current 树）
+        pendingLanes: NoLanes, // 待处理的更新优先级队列
+        // 其他全局状态...
+      };
+      // 2. 创建 HostRootFiber（根 Fiber 节点）
+      const uninitializedFiber = createHostRootFiber(tag);
+      root.current = uninitializedFiber; // FiberRoot 关联 current 树
+      uninitializedFiber.stateNode = root; // Fiber 节点反向关联 FiberRoot
+      return root;
+    }
+    ```
+
+   * 双缓冲机制\
+   双缓冲机制是指在渲染过程中，使用两个缓冲区来存储中间结果，避免直接渲染到屏幕上导致的闪烁问题。\
+   在更新过程中的commit阶段，最后root.current = workInProgressRootFiber，从而实现平滑的渲染效果。\
+   ![双缓冲机制](/images/wip.webp)
+
+2. **触发渲染**
