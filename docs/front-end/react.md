@@ -328,6 +328,7 @@ function Counter() {
 
 ## react 渲染过程
 1. **初始化阶段**
+   <span style="color: red">react版本为19.1.0</span>
    * createRoot入口\
    以下是伪代码，[createRoot源码](https://github.com/facebook/react/blob/main/packages/react-dom/src/client/ReactDOMRoot.js#L171)
    ```js
@@ -388,6 +389,186 @@ function Counter() {
    * 双缓冲机制\
    双缓冲机制是指在渲染过程中，使用两个缓冲区来存储中间结果，避免直接渲染到屏幕上导致的闪烁问题。\
    在更新过程中的commit阶段，最后root.current = workInProgressRootFiber，从而实现平滑的渲染效果。\
+   [Fiber数据结构](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactInternalTypes.js#L88)\
    ![双缓冲机制](/images/wip.webp)
 
 2. **触发渲染**
+    * 调用render\
+    以下是伪代码，[render源码](https://github.com/facebook/react/blob/main/packages/react-dom/src/client/ReactDOMRoot.js#L107)
+    ```js
+      ReactDOMRoot.prototype.render = function(children) {
+        updateContainer(children, root, null, null);
+      };
+      ```
+   
+   * updateContainer创建更新并触发调度
+    以下是伪代码，[updateContainer源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberReconciler.js#L355)
+    ```js
+    function updateContainer(
+      element,
+      container,
+      parentComponent,
+      callback,
+    ){
+      // 1. 获取根 Fiber 节点（HostRootFiber）
+      const current = container.current;
+      // 2. 为初始更新分配优先级（同步优先级，确保立即执行）
+      const lane = requestUpdateLane(current);
+      // 3. 创建更新对象（内容为 <App /> 组件树）
+      const update = createUpdate(lane, null, callback);
+      update.payload = { element }; // 更新内容：待渲染的组件树
+      // 4. 加入更新队列
+      enqueueUpdate(current, update);
+      // 5. 调度更新执行
+      scheduleUpdateOnFiber(current, lane, node);
+    }
+    ```
+
+3. **调度协调阶段**
+   * 调度更新\
+   以下是伪代码，[scheduleUpdateOnFiber源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberWorkLoop.js#L871)
+   ```js
+   function scheduleUpdateOnFiber(fiber, lane, eventTime) {
+     //标记root 为更新状态
+    markRootUpdated(root, lane);
+    // 确保根节点被调度（调度入口）
+    ensureRootIsScheduled(root);
+   }
+   ```
+   ```js
+   function ensureRootIsScheduled(root) {
+    // 触发微任务调度
+    ensureScheduleIsScheduled()
+   }
+   ```
+
+   以下是伪代码，[ensureScheduleIsScheduled源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberRootScheduler.js#L153)
+   ```js
+   function ensureScheduleIsScheduled() {
+    // 执行微任务
+    if (!didScheduleMicrotask) {
+      didScheduleMicrotask = true;
+      scheduleImmediateRootScheduleTask();
+    }
+   }
+   ```
+
+   
+   scheduleImmediateRootScheduleTask函数\
+   环境不同，它可能会使用微任务（microtask）或者调度器（Scheduler）来处理根节点的调度\
+   以下是伪代码，[scheduleImmediateRootScheduleTask源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberRootScheduler.js#L649)
+   ```js
+   function scheduleImmediateRootScheduleTask() {
+    // 1. 检查是否支持微任务
+    if (supportsMicrotasks) {
+      // 2. 使用微任务调度
+      processRootScheduleInMicrotask(performRootSchedule);
+    } else {
+      // 3. 使用调度器调度
+      scheduleCallback(ImmediateSchedulerPriority, performRootSchedule);
+    }
+   }
+   ```
+
+   本次环境默认进入微任务调度，不使用Schedule调度\
+   调用processRootScheduleInMicrotask后，进入flushSyncWorkAcrossRoots_impl函数，处理同步工作\
+   以下是伪代码，[flushSyncWorkAcrossRoots_impl源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberRootScheduler.js#L184)
+    ```js
+    function flushSyncWorkAcrossRoots_impl(syncTransitionLanes, isDuringMicrotask) {
+      // 1. 检查是否有同步工作
+      if (!mightHavePendingSyncWork) return;
+      // 2. 重置标志
+      mightHavePendingSyncWork = false;
+      // 3. 遍历所有根节点
+      let root = firstScheduledRoot;
+      while (root !== null) {
+        // 4. 检查是否需要同步处理
+        if (
+          syncTransitionLanes !== NoLanes ||
+          includesSyncLane(root.pendingLanes) ||
+          (enableGestureTransition && isGestureRender(root.pendingLanes))
+        ) {
+          // 5. 执行同步工作
+          performSyncWorkOnRoot(root);
+        }
+        root = root.next;
+      }
+    }
+    ```
+
+  * 以下是performSyncWorkOnRoot到completeUnitOfWork的流程
+  <div>
+    <img style="margin: 0 auto" src="/images/toCompleteUnitOfWork.webp" alt="performSyncWorkOnRoot到completeUnitOfWork流程" />
+  </div>
+
+4. **commit 阶段**
+    completeUnitOfWork函数\
+    完成工作单元的处理并向上回溯 Fiber 树\
+    以下是伪代码，[completeUnitOfWork源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberWorkLoop.js#L3108)
+    ```js
+    function completeUnitOfWork(unitOfWork: Fiber): void {
+      let completedWork: Fiber = unitOfWork;
+        do {
+          // 1. 检查未完成标志
+          if ((completedWork.flags & Incomplete) !== NoFlags) {
+            unwindUnitOfWork(completedWork, ...);
+            return;
+          }
+          // 2. 获取当前节点和父节点
+          const current = completedWork.alternate;
+          const returnFiber = completedWork.return;
+          // 3. 执行完成工作
+          const next = completeWork(current, completedWork, entangledRenderLanes);
+          // 4. 处理新产生的工作
+          if (next !== null) {
+            workInProgress = next;
+            return;
+          }
+          // 5. 处理兄弟节点
+          const siblingFiber = completedWork.sibling;
+          if (siblingFiber !== null) {
+            workInProgress = siblingFiber;
+            return;
+          }
+          // 6. 回溯到父节点
+          completedWork = returnFiber;
+          workInProgress = completedWork;
+        } while (completedWork !== null);
+        // 7. 标记根节点完成
+        if (workInProgressRootExitStatus === RootInProgress) {
+          workInProgressRootExitStatus = RootCompleted;
+        }
+    }
+    ```
+  completeWork函数\
+  创建/更新 DOM 节点并设置属性、构建 effect 链表供提交阶段使用\
+  [completeWork源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberCompleteWork.js#L1064)
+
+  commitRootWhenReady、commitRoot函数\
+  在finishConcurrentRender函数中触发\
+  提交根节点的 effect 链表，将 DOM 变更应用到真实 DOM 上\
+  [finishConcurrentRender源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1297)
+  [commitRoot源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberWorkLoop.js#L3251)
+  以下是commitRoot函数的伪代码
+  ```js
+  function commitRoot(root) {
+    const finishedWork = root.finishedWork;
+    // 执行 BeforeMutation 阶段生命周期
+    // 读取当前 DOM 状态
+    commitBeforeMutationEffects(finishedWork);
+    // 执行 DOM 操作
+    // 插入/更新/删除节点
+    // 更新 DOM 属性
+    // 文本节点内容变更
+    commitMutationEffects(finishedWork, root);
+    // 切换当前 Fiber 树
+    root.current = finishedWork;
+    // 执行 Layout 阶段生命周期
+    // 生命周期：componentDidMount/componentDidUpdate
+    // Hook useLayoutEffect 回调
+    commitLayoutEffects(finishedWork, root);
+    // 清理工作
+    root.finishedWork = null;
+  }
+  ```
+
