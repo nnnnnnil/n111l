@@ -327,7 +327,7 @@ function Counter() {
     ![useState 实现整体过程](/images/useState.webp)
 
 ## react 渲染过程
-1. **初始化阶段**
+1. **初始化阶段**\
    <span style="color: red">react版本为19.1.0</span>
    * createRoot入口\
    以下是伪代码，[createRoot源码](https://github.com/facebook/react/blob/main/packages/react-dom/src/client/ReactDOMRoot.js#L171)
@@ -502,7 +502,7 @@ function Counter() {
   </div>
 
 4. **commit 阶段**
-    completeUnitOfWork函数\
+    * completeUnitOfWork函数\
     完成工作单元的处理并向上回溯 Fiber 树\
     以下是伪代码，[completeUnitOfWork源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberWorkLoop.js#L3108)
     ```js
@@ -540,7 +540,7 @@ function Counter() {
         }
     }
     ```
-  completeWork函数\
+  * completeWork函数\
   创建/更新 DOM 节点并设置属性、构建 effect 链表供提交阶段使用\
   [completeWork源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberCompleteWork.js#L1064)
 
@@ -572,3 +572,4 @@ function Counter() {
   }
   ```
 
+<!-- 5. **整体渲染流程图** -->
