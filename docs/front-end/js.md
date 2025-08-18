@@ -703,14 +703,13 @@ function createOperator(proto) {
 ```
 14. **如何实现柯里化**
 ```js
-function curry(fn) {
+function curry(fn, ...rest) {
   return function(...args) {
-    if (args.length >= fn.length) {
-      return fn.apply(this, args);
+    const allArgs = [...rest, ...args];
+    if (allArgs.length >= fn.length) {
+      return fn.apply(this, allArgs);
     }
-    return function(...args2) {
-      return fn.apply(this, args.concat(args2));
-    };
+    return curry(fn, ...allArgs);
   };
 }
 ```
