@@ -565,7 +565,7 @@ class EventEmitter {
   
   on(event, callback) {
     if (!this.events[event]) {
-      this.events[event] = [];
+      this.events[event] = [callback];
     }
     this.events[event].push(callback);
   }
