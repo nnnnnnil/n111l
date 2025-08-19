@@ -906,7 +906,7 @@ width: 200px;
 ## 九、css预处理
 1.  什么是css预处理？
     css预处理是指在css代码编写过程中，使用一种特殊的语法和工具，将其转换为标准的css代码。
-2. scss
+2.  scss
     scss是一种css的预处理语言，它扩展了css的功能，增加了变量、嵌套、Mixin、继承等特性，使css代码更加简洁、易维护。
     变量：
     scss允许定义变量，用于存储重复使用的值，如颜色、字体大小等。
@@ -917,6 +917,7 @@ width: 200px;
         color: $primary-color;
     }
     ```
+
     嵌套：
     scss允许将选择器嵌套在其他选择器内部，使代码更加清晰、易读。
     示例：
@@ -928,6 +929,7 @@ width: 200px;
         }
     }
     ```
+
     Mixin：
     scss允许定义可重复使用的代码块，称为Mixin。
     示例：
@@ -941,6 +943,7 @@ width: 200px;
         @include flex-center;
     }
     ```
+
     继承：
     scss允许一个选择器继承另一个选择器的样式，称为继承。
     示例：
@@ -954,6 +957,7 @@ width: 200px;
         background-color: red;
     }
     ```
+
     函数：
     scss允许定义函数，用于计算值或处理字符串等。
     示例：
@@ -965,6 +969,7 @@ width: 200px;
         width: double(100px);
     }
     ```
+
     条件语句：
     scss允许使用条件语句，如`@if`、`@else if`、`@else`等。
     示例：
@@ -979,6 +984,7 @@ width: 200px;
         }
     }
     ```
+
     循环语句：
     scss允许使用循环语句，如`@for`、`@each`、`@while`等。
     示例：
@@ -989,6 +995,7 @@ width: 200px;
         }
     }
     ```
+
     运算符：
     scss允许使用运算符，如`+`、`-`、`*`、`/`等。
     示例：
@@ -1005,6 +1012,7 @@ width: 200px;
         width: round(100.5px);
     }
     ```
+
     字符串函数：
     scss允许使用字符串函数，如`unquote()`、`quote()`、`to-upper-case()`、`to-lower-case()`等。
     示例：
@@ -1013,6 +1021,7 @@ width: 200px;
         content: unquote('hello');
     }
     ```
+
     列表函数：
     scss允许使用列表函数，如`length()`、`nth()`、`join()`、`append()`等。
     示例：
@@ -1021,6 +1030,7 @@ width: 200px;
         content: length(100px 200px 300px);
     }
     ```
+
     颜色函数：
     scss允许使用颜色函数，如`rgba()`、`hsla()`、`lighten()`、`darken()`等。
     示例：
@@ -1029,6 +1039,7 @@ width: 200px;
         background-color: rgba(255, 0, 0, 0.5);
     }
     ```
+
     时间函数：
     scss允许使用时间函数，如`time()`、`date()`、`month()`、`year()`等。
     示例：
@@ -1037,6 +1048,7 @@ width: 200px;
         content: time();
     }
     ```
+
     其他函数：
     scss允许使用其他函数，如`random()`、`abs()`、`min()`、`max()`等。
     示例：
@@ -1045,6 +1057,7 @@ width: 200px;
         content: random();
     }
     ```
+    
     导入：
     scss允许使用`@import`导入其他scss文件，如`@import 'variables.scss';`。
     示例：
