@@ -14,7 +14,21 @@ const sidebarConfig = [
   },
   {
     text: '后端',
-    items: [] // 后端子菜单可根据需要添加
+    items: [
+      {
+        text: 'Nest',
+        link: '/back-end/nest'
+      }
+    ] // 后端子菜单可根据需要添加
+  },
+  {
+    text: '其他',
+    items: [
+      {
+        text: 'Docker',
+        link: '/other/docker'
+      }
+    ]
   }
 ]
 
