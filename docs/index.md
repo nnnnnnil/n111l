@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: N111l
-  text: 记录一些开发知识片段
-  tagline: What Can I Say? ManBa out!
+  text: 记录一些知识片段
+  tagline: What Can I Say? MamBa out!
   actions:
     - theme: brand
       text: 快速开始
