@@ -72,9 +72,9 @@ pageClass: page-profile-class
 
 3.  熟练掌握 `vue2` 和 `vue3` 框架，结合 `vue` 生态（如 `element ui`、`antd vue`、`pinia` 等）开发。
 
-4.  熟悉 `node` 框架 `nest.js`，配合 `mysql` 进行简单 `web` 服务开发。
+4.  熟悉微信小程序，taro框架。
 
-5.  熟悉 `docker` 基本使用和项目容器化部署。
+5.  熟悉node框架nest.js，ssr框架next.js，docker容器技术
 
 <h2>四、项目经历</h2>
 
@@ -134,7 +134,7 @@ pageClass: page-profile-class
 
 **负责**：实现 `menu`、`tree`、`checkbox`、`slider` 等组件
 
-**难点**：`carousel` 组件处理嵌套，`menu` 激活态 `subMenu` 高亮
+**难点**：`carousel`组件获取slots数量考虑是否有嵌套fragments或者其他组件；`menu`中`menuItem`被激活时，`subMenu`高亮处理；`input`组件考虑中文输入时，onChange/onInput事件的触发
 
 **亮点**：`pnpm workspace` 构建 `monorepo` 架构
 
