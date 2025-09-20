@@ -125,8 +125,8 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
      * 
 
 ## 三、内置高级类型
-1. `Partial<T>`
-   `Partial<T>` 用于将类型 `T` 的所有属性设为可选。
+1. `Partial<T>`\
+   用于将类型 `T` 的所有属性设为可选。
    ```ts
    interface Person {
      name: string;
@@ -140,8 +140,8 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
      [P in keyof T]?: T[P];
    };
    ```
-2. `Required<T>`
-   `Required<T>` 用于将类型 `T` 的所有属性设为必填。
+2. `Required<T>`\
+   用于将类型 `T` 的所有属性设为必填。
    ```ts
    interface Person {
      name?: string;
@@ -155,8 +155,8 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
      [P in keyof T]-?: T[P];
    };
    ```
-3. `Readonly<T>`
-   `Readonly<T>` 用于将类型 `T` 的所有属性设为只读。
+3. `Readonly<T>`\
+   用于将类型 `T` 的所有属性设为只读。
    ```ts
    interface Person {
      name: string;
@@ -171,8 +171,8 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
      readonly [P in keyof T]: T[P];
    };
    ```
-4. `Pick<T, K>`
-   `Pick<T, K>` 用于从类型 `T` 中选择出属性 `K`，并返回一个新的类型。
+4. `Pick<T, K>`\
+   用于从类型 `T` 中选择出属性 `K`，并返回一个新的类型。
    ```ts
    interface Person {
      name: string;
@@ -187,8 +187,8 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
      [P in K]: T[P];
    };
    ```
-5. `Omit<T, K>`
-   `Omit<T, K>` 用于从类型 `T` 中排除属性 `K`，并返回一个新的类型。
+5. `Omit<T, K>`\
+   用于从类型 `T` 中排除属性 `K`，并返回一个新的类型。
    ```ts
    interface Person {
      name: string;
@@ -201,19 +201,19 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
    ```ts
    type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
    ```
-6. `Record<K, T>`
-    `Record<K, T>` 用于创建一个对象类型，其属性键为类型 `K`，属性值为类型 `T`。
-    ```ts
-    type T = Record<string, number>; // { [key: string]: number }
-    ```
-    * 源码实现
-    ```ts
-    type Record<K extends keyof any, T> = {
-      [P in K]: T;
-    };
-    ```
-7. `Exclude<T, U>`
-   `Exclude<T, U>` 用于从类型 `T` 中排除类型 `U`，并返回一个新的类型。
+6. `Record<K, T>`\
+   用于创建一个对象类型，其属性键为类型 `K`，属性值为类型 `T`。
+   ```ts
+   type T = Record<string, number>; // { [key: string]: number }
+   ```
+   * 源码实现
+   ```ts
+   type Record<K extends keyof any, T> = {
+     [P in K]: T;
+   };
+   ```
+7. `Exclude<T, U>`\
+    用于从类型 `T` 中排除类型 `U`，并返回一个新的类型。
    ```ts
    type T = Exclude<"a" | "b" | "c", "a" | "b">; // "c"
    ```
@@ -221,8 +221,8 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
    ```ts
    type Exclude<T, U> = T extends U ? never : T;
    ``` 
-8. `Extract<T, U>`
-   `Extract<T, U>` 用于从类型 `T` 中提取类型 `U`，并返回一个新的类型。
+8. `Extract<T, U>`\
+   用于从类型 `T` 中提取类型 `U`，并返回一个新的类型。
    ```ts
    type T = Extract<"a" | "b" | "c", "a" | "b">; // "a" | "b"
    ```
@@ -230,26 +230,26 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
    ```ts
    type Extract<T, U> = T extends U ? T : never;
    ```
-9. `NonNullable<T>`
-   `NonNullable<T>` 用于从类型 `T` 中排除 `null` 和 `undefined`，并返回一个新的类型。
-   ```ts
-   type T = NonNullable<string | number | null | undefined>; // string | number
-   ```
-   * 源码实现
-   ```ts
-   type NonNullable<T> = T extends null | undefined ? never : T;
-   ```
-10. `Parameters<T>`
-   `Parameters<T>` 用于获取函数类型 `T` 的参数类型，并返回一个元组类型。
-   ```ts
-   type T = Parameters<(a: number, b: string) => void>; // [number, string]
-   ```
-   * 源码实现
-   ```ts
-   type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
-   ```
-11. `ConstructorParameters<T>`
-    `ConstructorParameters<T>` 用于获取构造函数类型 `T` 的参数类型，并返回一个元组类型。
+9. `NonNullable<T>`\
+    用于从类型 `T` 中排除 `null` 和 `undefined`，并返回一个新的类型。
+    ```ts
+    type T = NonNullable<string | number | null | undefined>; // string | number
+    ```
+    * 源码实现
+    ```ts
+    type NonNullable<T> = T extends null | undefined ? never : T;
+    ```
+10. `Parameters<T>`\
+    用于获取函数类型 `T` 的参数类型，并返回一个元组类型。
+    ```ts
+    type T = Parameters<(a: number, b: string) => void>; // [number, string]
+    ```
+    * 源码实现
+    ```ts
+    type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
+    ```
+11. `ConstructorParameters<T>`\
+    用于获取构造函数类型 `T` 的参数类型，并返回一个元组类型。
     ```ts
     type T = ConstructorParameters<new (a: number, b: string) => void>; // [number, string]
     ```
@@ -257,8 +257,8 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
     ```ts
     type ConstructorParameters<T extends new (...args: any) => any> = T extends new (...args: infer P) => any ? P : never;
     ```
-12. `ReturnType<T>`
-    `ReturnType<T>` 用于获取函数类型 `T` 的返回类型，并返回一个新的类型。
+12. `ReturnType<T>`\
+    用于获取函数类型 `T` 的返回类型，并返回一个新的类型。
     ```ts
     type T = ReturnType<(a: number, b: string) => void>; // void
     ```
@@ -266,14 +266,23 @@ TypeScript是JavaScript的超集，添加了静态类型检查。
     ```ts
     type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : never;
     ```
-13. `InstanceType<T>`
-    `InstanceType<T>` 用于获取构造函数类型 `T` 的实例类型，并返回一个新的类型。
+13. `InstanceType<T>`\
+    用于获取构造函数类型 `T` 的实例类型，并返回一个新的类型。
     ```ts
     type T = InstanceType<new (a: number, b: string) => void>; // void
     ```
     * 源码实现
     ```ts
     type InstanceType<T extends new (...args: any) => any> = T extends new (...args: any) => infer R ? R : never;
+    ```
+14. `ThisParameterType<T>`\
+    用于获取函数类型 `T` 的 `this` 参数类型，并返回一个新的类型。
+    ```ts
+    type T = ThisParameterType<(this: { a: number }, a: number, b: string) => void>; // { a: number }
+    ```
+    * 源码实现
+    ```ts
+    type ThisParameterType<T extends (...args: any) => any> = T extends (this: infer P, ...args: any) => any ? P : unknown;
     ```
 
 ## 四、其他
