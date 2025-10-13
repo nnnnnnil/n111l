@@ -9,7 +9,8 @@ const sidebarConfig = [
       { text: 'JavaScript', link: '/front-end/js' },
       { text: 'TypeScript', link: '/front-end/ts' },
       { text: 'Vue', link: '/front-end/vue' },
-      { text: 'React', link: '/front-end/react' }
+      { text: 'React', link: '/front-end/react' },
+      { text: 'ahooks', link: '/front-end/ahooks' }
     ]
   },
   {
