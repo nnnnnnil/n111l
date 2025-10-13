@@ -68,7 +68,7 @@ pageClass: page-profile-class
 
 1.  熟练掌握 `html`、`css`、`javascript` 和 `typescript`。
 
-2.  熟练运用 `react` 框架，并能结合其生态进行开发，了解其基本原理。
+2.  熟练掌握 `react` 框架，并能结合其生态进行开发，了解其基本原理。
 
 3.  熟练掌握 `vue2` 和 `vue3` 框架，并能结合其生态进行开发，了解其基本原理。
 

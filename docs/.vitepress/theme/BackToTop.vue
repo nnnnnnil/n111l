@@ -39,7 +39,6 @@ const throttle = (fn: Function, delay: number) => {
 
 // 处理滚动事件
 const handleScroll = throttle(() => {
-  console.log('滚动事件触发')
 
   if (window.scrollY > 300) {
     isVisible.value = true

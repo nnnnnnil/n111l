@@ -45,6 +45,10 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/nnnnnnil' }
     ],
+    footer: {
+      message: 'Released under the MIT License.',
+      copyright: 'Copyright © 2025-present nnnnnnil'
+    },
     // 头部导航配置
     nav: [
       {
