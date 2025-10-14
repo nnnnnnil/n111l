@@ -1,7 +1,7 @@
 # ahooks 理解
 
-ahooks 是一个 React  Hooks 库，提供了一些常用的 Hooks 函数，帮助开发者更方便地使用 React Hooks。/n
-ahooks 源码地址：[ahooks](https://github.com/alibaba/hooks)
+ahooks 是一个 React  Hooks 库，提供了一些常用的 Hooks 函数，帮助开发者更方便地使用 React Hooks。
+<br>ahooks 源码地址：[ahooks](https://github.com/alibaba/hooks)
 以下是个人阅读 ahooks 源码的理解。
 
 ## 个别源码阅读
