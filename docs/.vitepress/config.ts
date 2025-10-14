@@ -10,7 +10,7 @@ const sidebarConfig = [
       { text: 'TypeScript', link: '/front-end/ts' },
       { text: 'Vue', link: '/front-end/vue' },
       { text: 'React', link: '/front-end/react' },
-      { text: 'ahooks', link: '/front-end/ahooks' }
+      { text: 'Ahooks', link: '/front-end/ahooks' }
     ]
   },
   {

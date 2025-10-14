@@ -6,7 +6,7 @@ ahooks 源码地址：[ahooks](https://github.com/alibaba/hooks)
 
 ## 个别源码阅读
 
-1. **useCreation**
+1. **useCreation**  
    `useCreation` 函数用于保证缓存数据不会被重新创建，除非依赖项发生变化。
    * 实现原理：
    1. 利用 `useRef`  hook  来创建一个 ref 对象，用于存储变量。
@@ -28,7 +28,7 @@ ahooks 源码地址：[ahooks](https://github.com/alibaba/hooks)
     }
    ```
 
-2. **useUpdate**
+2. **useUpdate**  
    `useUpdate` 函数用于强制更新组件。
    * 实现原理：
    1. 利用 `useState`  hook  保存空对象，setState 来触发组件更新。
@@ -41,7 +41,7 @@ ahooks 源码地址：[ahooks](https://github.com/alibaba/hooks)
     }
    ```
 
-3. **useReactive**
+3. **useReactive**  
    `useReactive` 函数用于创建一个响应式的对象，当对象的属性发生变化时，会自动触发组件的重新渲染。
    * 实现原理：
    1. 利用 `useUpdate`  hook  来触发组件更新。
@@ -50,7 +50,7 @@ ahooks 源码地址：[ahooks](https://github.com/alibaba/hooks)
    4. 利用 proxy 来代理 ref 对象，weakMap来记录代理过的对象和防止代理已经代理过的对象。
 
 
-4. **useMount**
+4. **useMount**  
    `useMount` 函数用于在组件挂载时执行副作用操作。
    * 实现原理：
    1. 利用 `useEffect`  hook  来监听组件挂载事件。
@@ -63,7 +63,7 @@ ahooks 源码地址：[ahooks](https://github.com/alibaba/hooks)
     }
    ```
 
-5. **useLatest**
+5. **useLatest**  
    `useLatest` 函数用于获取最新的函数或值。
    * 实现原理：
    1. 利用 `useRef`  hook  来创建一个 ref 对象，用于存储函数或值。
@@ -78,7 +78,7 @@ ahooks 源码地址：[ahooks](https://github.com/alibaba/hooks)
     }
    ```
 
-6. **useUnmount**
+6. **useUnmount**  
    `useUnmount` 函数用于在组件卸载时执行副作用操作。
    * 实现原理：
    1. 利用 `useEffect`  hook  来监听组件卸载事件。
@@ -97,7 +97,7 @@ ahooks 源码地址：[ahooks](https://github.com/alibaba/hooks)
     }
    ```
 
-7. **useMemoizedFn**
+7. **useMemoizedFn**  
    `useMemoizedFn` 函数用于缓存函数，保证函数地址不会改变。
    * 实现原理：
    1. 利用两个 `useRef`  hook  分别保存传入的函数和新构建的函数。
@@ -117,7 +117,7 @@ ahooks 源码地址：[ahooks](https://github.com/alibaba/hooks)
     }
    ```
 
-8. **useTimeout**
+8. **useTimeout**  
    `useTimeout` 函数用于在指定时间后执行副作用操作。
    * 实现原理：
    1. 利用 `useMemoizedFn`  hook  来缓存参数fn函数，`useRef`  hook  来保存定时器id。
