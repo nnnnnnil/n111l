@@ -772,3 +772,42 @@ Array.prototype.reduce = function(callback, initialValue) {
   return accumulator;
 }
 ```
+19. **实现请求池**
+```js
+class RequestPool {
+  constructor(maxConcurrent = 2) {
+    this.maxConcurrent = maxConcurrent; // 最大并发数
+    this.queue = []; // 等待队列
+    this.activeCount = 0; // 当前活跃请求数
+  }
+
+  // 添加请求到池
+  add(requestFn) {
+    return new Promise((resolve, reject) => {
+      // 封装任务：包含执行逻辑和回调处理
+      const task = () => {
+        this.activeCount++;
+        requestFn()
+          .then(resolve)
+          .catch(reject)
+          .finally(() => {
+            this.activeCount--;
+            this.next(); // 当前请求完成后触发下一个
+          });
+      };
+
+      this.queue.push(task); // 将任务加入队列
+      this.next(); // 尝试立即执行
+    });
+  }
+
+  // 处理下一个请求
+  next() {
+    // 当前活跃数未达上限且队列有任务时，执行任务
+    if (this.activeCount < this.maxConcurrent && this.queue.length > 0) {
+      const task = this.queue.shift(); // 取出队列中的第一个任务
+      task(); // 执行该任务
+    }
+  }
+}
+```
