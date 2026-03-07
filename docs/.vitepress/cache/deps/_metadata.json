@@ -1,49 +1,49 @@
 {
-  "hash": "4a2dc85a",
-  "configHash": "b1d88548",
+  "hash": "0fc04d4b",
+  "configHash": "b16d9345",
   "lockfileHash": "dccf9feb",
-  "browserHash": "49e38d7b",
+  "browserHash": "dfe0ebe1",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/.pnpm/vue@3.4.21/node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "280657af",
+      "fileHash": "a3906cc3",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/.pnpm/@vue+devtools-api@7.7.7/node_modules/@vue/devtools-api/dist/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "c44ae1cb",
+      "fileHash": "f6f6877e",
       "needsInterop": false
     },
     "vitepress > @vueuse/core": {
       "src": "../../../../node_modules/.pnpm/@vueuse+core@12.8.2/node_modules/@vueuse/core/index.mjs",
       "file": "vitepress___@vueuse_core.js",
-      "fileHash": "75d02030",
+      "fileHash": "a9d6b46f",
       "needsInterop": false
     },
     "vitepress > @vueuse/integrations/useFocusTrap": {
       "src": "../../../../node_modules/.pnpm/@vueuse+integrations@12.8.2_focus-trap@7.6.5/node_modules/@vueuse/integrations/useFocusTrap.mjs",
       "file": "vitepress___@vueuse_integrations_useFocusTrap.js",
-      "fileHash": "47d6cd43",
+      "fileHash": "8d8ed880",
       "needsInterop": false
     },
     "vitepress > mark.js/src/vanilla.js": {
       "src": "../../../../node_modules/.pnpm/mark.js@8.11.1/node_modules/mark.js/src/vanilla.js",
       "file": "vitepress___mark__js_src_vanilla__js.js",
-      "fileHash": "ff9287fd",
+      "fileHash": "59b5f382",
       "needsInterop": false
     },
     "vitepress > minisearch": {
       "src": "../../../../node_modules/.pnpm/minisearch@7.1.2/node_modules/minisearch/dist/es/index.js",
       "file": "vitepress___minisearch.js",
-      "fileHash": "2f7b8054",
+      "fileHash": "bf59cdc1",
       "needsInterop": false
     },
     "gitalk": {
       "src": "../../../../node_modules/.pnpm/gitalk@1.8.0/node_modules/gitalk/dist/gitalk.js",
       "file": "gitalk.js",
-      "fileHash": "3f8f225c",
+      "fileHash": "f914ff66",
       "needsInterop": true
     }
   },
